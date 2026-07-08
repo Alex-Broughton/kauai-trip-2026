@@ -164,6 +164,16 @@
     margin-top: 6px;
     font-weight: 600;
   }
+  .location a {
+    color: var(--palo-alto);
+    text-decoration: underline;
+    text-decoration-color: rgba(23,94,84,0.35);
+    text-underline-offset: 2px;
+  }
+  .location a:hover {
+    color: var(--cardinal-dark);
+    text-decoration-color: currentColor;
+  }
   .waiver-box {
     margin-top: 10px;
     background: #faf2f2;
@@ -552,7 +562,10 @@ function renderDays() {
         if (a.who) html += `<div class="who">${a.who}</div>`;
         html += `<div class="activity-title">${a.title}${a.time ? " · " + a.time : ""}${a.custom ? '<span class="custom-tag">Added</span>' : ""}</div>`;
         if (a.detail) html += `<div class="activity-detail">${a.detail}</div>`;
-        if (a.location) html += `<div class="location">📍 ${a.location}</div>`;
+        if (a.location) {
+          const mapsUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(a.location);
+          html += `<div class="location">📍 <a href="${mapsUrl}" target="_blank" rel="noopener">${a.location}</a></div>`;
+        }
         act.innerHTML = html;
 
         if (a.custom) {
