@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kauai Trip Itinerary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@600;700&family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cardinal: #8C1515;
+    --cardinal-dark: #5c0f0f;
+    --palo-alto: #175E54;
+    --stone: #7F7776;
+    --fog: #DAD7CB;
+    --cloud: #F7F6F3;
+    --black: #2E2D29;
+    --ink: #2E2D29;
+    --muted: #6b665f;
+    --card-bg: #ffffff;
+    --border: #e2ddd2;
+    --gold: #B26F16;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--cloud);
+    color: var(--ink);
+    padding: 0 16px 60px;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  header {
+    position: relative;
+    text-align: center;
+    padding: 34px 0 46px;
+    margin-bottom: 8px;
+    color: #ffffff;
+    background:
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 14px),
+      linear-gradient(160deg, var(--cardinal) 0%, var(--cardinal-dark) 100%);
+    border-radius: 0 0 22px 22px;
+    box-shadow: 0 6px 20px rgba(140,21,21,0.25);
+  }
+  header .crest {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+  }
+  header h1 {
+    font-family: "Source Serif Pro", Georgia, serif;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: #ffffff;
+    letter-spacing: 0.4px;
+  }
+  header .rule {
+    width: 60px;
+    height: 3px;
+    background: var(--gold);
+    margin: 0 auto 10px;
+    border-radius: 2px;
+  }
+  header p {
+    margin: 0;
+    color: #f2dede;
+    font-size: 0.95rem;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .day {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--cardinal);
+    border-radius: 12px;
+    margin-bottom: 18px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(46,45,41,0.06);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .day:hover {
+    box-shadow: 0 6px 16px rgba(46,45,41,0.1);
+    transform: translateY(-1px);
+  }
+  .day.today {
+    border-top: 4px solid var(--gold);
+    box-shadow: 0 8px 22px rgba(178,111,22,0.28);
+  }
+  .day-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: linear-gradient(120deg, var(--cardinal) 0%, var(--cardinal-dark) 100%);
+    color: white;
+  }
+  .day.today .day-head { background: linear-gradient(120deg, var(--gold) 0%, #8a5411 100%); }
+  .day-date {
+    font-family: "Source Serif Pro", Georgia, serif;
+    font-weight: 700;
+    font-size: 1.12rem;
+    letter-spacing: 0.2px;
+  }
+  .today-badge {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.3);
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+  .day-body { padding: 16px 18px; }
+  .empty-day {
+    color: var(--muted);
+    font-style: italic;
+    font-size: 0.92rem;
+  }
+  .activity {
+    position: relative;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .activity:last-child { border-bottom: none; }
+  .who {
+    display: inline-block;
+    background: var(--fog);
+    color: var(--cardinal-dark);
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 2px 9px;
+    border-radius: 20px;
+    margin-bottom: 7px;
+    letter-spacing: 0.2px;
+  }
+  .activity-title {
+    font-weight: 700;
+    margin: 2px 0 4px;
+    font-size: 0.98rem;
+    color: var(--black);
+    padding-right: 22px;
+  }
+  .activity-detail {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .location {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--palo-alto);
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  .waiver-box {
+    margin-top: 10px;
+    background: #faf2f2;
+    border: 1px solid #f0dcdc;
+    border-left: 3px solid var(--cardinal);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .waiver-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--cardinal-dark);
+    margin-bottom: 7px;
+  }
+  .waiver-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+  }
+  .waiver-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    user-select: none;
+  }
+  .waiver-check input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    accent-color: var(--cardinal);
+    cursor: pointer;
+  }
+  .waiver-check.checked {
+    color: var(--stone);
+    text-decoration: line-through;
+    text-decoration-color: var(--stone);
+  }
+  .activity-remove {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    background: none;
+    border: none;
+    color: var(--stone);
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 2px 4px;
+  }
+  .activity-remove:hover { color: var(--cardinal); }
+  .custom-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: var(--palo-alto);
+    background: #e6f0ee;
+    padding: 1px 7px;
+    border-radius: 20px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .add-event-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--palo-alto);
+    border-radius: 12px;
+    padding: 20px 18px;
+    margin-top: 6px;
+    box-shadow: 0 2px 6px rgba(46,45,41,0.06);
+  }
+  .add-event-title {
+    font-family: "Source Serif Pro", Georgia, serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--black);
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 14px;
+    margin-bottom: 8px;
+  }
+  .form-field.full { grid-column: 1 / -1; }
+  .form-field label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--stone);
+    margin-bottom: 5px;
+  }
+  .form-field input[type="text"],
+  .form-field input[type="date"] {
+    width: 100%;
+    padding: 9px 11px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: var(--ink);
+    background: #fff;
+  }
+  .form-field input:focus {
+    outline: none;
+    border-color: var(--cardinal);
+    box-shadow: 0 0 0 3px rgba(140,21,21,0.1);
+  }
+  .form-checkbox {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .form-checkbox input {
+    width: 17px;
+    height: 17px;
+    accent-color: var(--cardinal);
+  }
+  .form-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+  }
+  .btn-add {
+    background: var(--cardinal);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .btn-add:hover { background: var(--cardinal-dark); }
+  .form-msg {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--palo-alto);
+  }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-top: 30px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="crest">🌺</div>
+    <h1>Kauai Trip</h1>
+    <div class="rule"></div>
+    <p id="trip-dates">July 8 &ndash; July 15</p>
+  </header>
+
+  <div id="days"></div>
+
+  <div class="add-event-card">
+    <div class="add-event-title">➕ Add an Event</div>
+    <form id="add-event-form">
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="ev-date">Date</label>
+          <input type="date" id="ev-date" required>
+        </div>
+        <div class="form-field">
+          <label for="ev-time">Time</label>
+          <input type="text" id="ev-time" placeholder="e.g. 10:00am (2 hours)">
+        </div>
+        <div class="form-field full">
+          <label for="ev-title">Event</label>
+          <input type="text" id="ev-title" placeholder="e.g. Snorkeling at Tunnels Beach" required>
+        </div>
+        <div class="form-field">
+          <label for="ev-who">Who</label>
+          <input type="text" id="ev-who" placeholder="e.g. Everyone or Alex, Jeff">
+        </div>
+        <div class="form-field">
+          <label for="ev-location">Location</label>
+          <input type="text" id="ev-location" placeholder="Address or place name">
+        </div>
+        <label class="form-checkbox">
+          <input type="checkbox" id="ev-waiver">
+          Requires a waiver
+        </label>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-add">Add Event</button>
+        <span class="form-msg" id="form-msg"></span>
+      </div>
+    </form>
+  </div>
+
+  <footer>Have a great trip!</footer>
+</div>
+
+<script>
+const PEOPLE_ALL = ["Alex", "Katie", "Jeff", "Elizabeth", "James"];
+const STORAGE_PREFIX = "kauai-waiver::";
+const CUSTOM_KEY = "kauai-custom-events";
+
+function expandNames(who) {
+  if (!who) return [];
+  if (who.trim() === "Everyone") return PEOPLE_ALL;
+  return who.split(",").map(s => s.trim()).filter(Boolean);
+}
+
+function slugify(s) {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+}
+
+function formatLabel(dateStr) {
+  const d = new Date(dateStr + "T00:00:00");
+  return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })
+    .replace(",", ",");
+}
+
+const baseDays = [
+  {
+    date: "2026-07-08", label: "Wed, Jul 8",
+    activities: [
+      { title: "Arrive & hangout around Poipu Beach" }
+    ]
+  },
+  {
+    date: "2026-07-09", label: "Thu, Jul 9",
+    activities: [
+      {
+        who: "Alex, Katie, Jeff",
+        title: "Lydgate Farms Honey & Bee Tour",
+        time: "9:30am (2 hours)",
+        detail: "Wear closed-toed shoes",
+        location: "5730 Olohema Rd, Kapaa",
+        waiver: true
+      },
+      {
+        who: "Elizabeth, James",
+        title: "Self-guided kayak tour",
+        time: "9:30am",
+        detail: "Wailua River to Secret Falls",
+        location: "4-369 Kuhio Hwy, Kapaa"
+      },
+      {
+        title: "Dinner? Lava Lava Beach Club",
+        detail: "Tentative"
+      }
+    ]
+  },
+  {
+    date: "2026-07-10", label: "Fri, Jul 10",
+    activities: [
+      {
+        who: "Everyone",
+        title: "Tubing — Kauai Backcountry Adventures",
+        time: "1:00pm (3 hours)",
+        detail: "Arrive by 12:30",
+        location: "3-4131 Kuhio Hwy, Lihue",
+        waiver: true
+      }
+    ]
+  },
+  {
+    date: "2026-07-11", label: "Sat, Jul 11",
+    activities: []
+  },
+  {
+    date: "2026-07-12", label: "Sun, Jul 12",
+    activities: [
+      {
+        who: "Everyone",
+        title: "Captain Andy's Sunset Cruise",
+        time: "2:15pm (4 hours)",
+        detail: "Arrive by 2:15pm · No shoes on boat · Dinner selection made (4 mahi mahi, 1 filet)",
+        location: "Departs Port Allen, Eleele",
+        waiver: true
+      }
+    ]
+  },
+  {
+    date: "2026-07-13", label: "Mon, Jul 13",
+    activities: [
+      {
+        who: "Elizabeth, James, Alex",
+        title: "Haena State Park & Hanakapiai Falls Hike",
+        detail: "Shuttle departs Waimea Park & Ride at 10:40am"
+      }
+    ]
+  },
+  {
+    date: "2026-07-14", label: "Tue, Jul 14",
+    activities: [
+      {
+        title: "2 daybeds reserved",
+        time: "9:00am – 6:00pm",
+        location: "Hotel"
+      },
+      {
+        title: "Red Salt dinner reservation",
+        time: "7:00pm",
+        location: "Hotel"
+      }
+    ]
+  },
+  {
+    date: "2026-07-15", label: "Wed, Jul 15",
+    activities: [
+      { title: "Fly back" }
+    ]
+  }
+];
+
+function loadCustomEvents() {
+  try {
+    return JSON.parse(localStorage.getItem(CUSTOM_KEY)) || [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveCustomEvents(events) {
+  localStorage.setItem(CUSTOM_KEY, JSON.stringify(events));
+}
+
+function getMergedDays() {
+  const map = {};
+  baseDays.forEach(d => {
+    map[d.date] = { date: d.date, label: d.label, activities: d.activities.map(a => ({ ...a })) };
+  });
+  loadCustomEvents().forEach(ev => {
+    if (!map[ev.date]) {
+      map[ev.date] = { date: ev.date, label: formatLabel(ev.date), activities: [] };
+    }
+    map[ev.date].activities.push({ ...ev, custom: true });
+  });
+  return Object.values(map).sort((a, b) => a.date.localeCompare(b.date));
+}
+
+const todayStr = new Date().toISOString().slice(0, 10);
+const container = document.getElementById("days");
+
+function renderDays() {
+  container.innerHTML = "";
+  const days = getMergedDays();
+
+  days.forEach(day => {
+    const isToday = day.date === todayStr;
+    const dayEl = document.createElement("div");
+    dayEl.className = "day" + (isToday ? " today" : "");
+    dayEl.dataset.date = day.date;
+
+    const head = document.createElement("div");
+    head.className = "day-head";
+    head.innerHTML = `<span class="day-date">${day.label}</span>` +
+      (isToday ? `<span class="today-badge">Today</span>` : "");
+    dayEl.appendChild(head);
+
+    const body = document.createElement("div");
+    body.className = "day-body";
+
+    if (day.activities.length === 0) {
+      body.innerHTML = `<div class="empty-day">Nothing planned — free day</div>`;
+    } else {
+      day.activities.forEach(a => {
+        const act = document.createElement("div");
+        act.className = "activity";
+        let html = "";
+        if (a.who) html += `<div class="who">${a.who}</div>`;
+        html += `<div class="activity-title">${a.title}${a.time ? " · " + a.time : ""}${a.custom ? '<span class="custom-tag">Added</span>' : ""}</div>`;
+        if (a.detail) html += `<div class="activity-detail">${a.detail}</div>`;
+        if (a.location) html += `<div class="location">📍 ${a.location}</div>`;
+        act.innerHTML = html;
+
+        if (a.custom) {
+          const removeBtn = document.createElement("button");
+          removeBtn.className = "activity-remove";
+          removeBtn.title = "Remove event";
+          removeBtn.textContent = "✕";
+          removeBtn.addEventListener("click", () => {
+            const events = loadCustomEvents().filter(e => e.id !== a.id);
+            saveCustomEvents(events);
+            renderDays();
+          });
+          act.appendChild(removeBtn);
+        }
+
+        if (a.waiver) {
+          const names = expandNames(a.who);
+          const box = document.createElement("div");
+          box.className = "waiver-box";
+          const title = document.createElement("div");
+          title.className = "waiver-title";
+          title.textContent = "Waiver required";
+          box.appendChild(title);
+
+          const list = document.createElement("div");
+          list.className = "waiver-list";
+          names.forEach(name => {
+            const key = STORAGE_PREFIX + slugify(day.date + "-" + a.title) + "::" + slugify(name);
+            const label = document.createElement("label");
+            label.className = "waiver-check";
+
+            const cb = document.createElement("input");
+            cb.type = "checkbox";
+            cb.checked = localStorage.getItem(key) === "1";
+            if (cb.checked) label.classList.add("checked");
+
+            cb.addEventListener("change", () => {
+              if (cb.checked) {
+                localStorage.setItem(key, "1");
+                label.classList.add("checked");
+              } else {
+                localStorage.removeItem(key);
+                label.classList.remove("checked");
+              }
+            });
+
+            const span = document.createElement("span");
+            span.textContent = name;
+
+            label.appendChild(cb);
+            label.appendChild(span);
+            list.appendChild(label);
+          });
+          box.appendChild(list);
+          act.appendChild(box);
+        }
+
+        body.appendChild(act);
+      });
+    }
+
+    dayEl.appendChild(body);
+    container.appendChild(dayEl);
+  });
+}
+
+renderDays();
+
+window.addEventListener("load", () => {
+  const todayEl = document.querySelector(".day.today");
+  if (todayEl) {
+    todayEl.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+});
+
+const form = document.getElementById("add-event-form");
+const msg = document.getElementById("form-msg");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const date = document.getElementById("ev-date").value;
+  const title = document.getElementById("ev-title").value.trim();
+  const time = document.getElementById("ev-time").value.trim();
+  const who = document.getElementById("ev-who").value.trim();
+  const location = document.getElementById("ev-location").value.trim();
+  const waiver = document.getElementById("ev-waiver").checked;
+
+  if (!date || !title) {
+    msg.textContent = "Please add a date and event name.";
+    msg.style.color = "var(--cardinal)";
+    return;
+  }
+
+  const events = loadCustomEvents();
+  const newEvent = {
+    id: "c" + Date.now(),
+    date, title,
+    time: time || undefined,
+    who: who || undefined,
+    location: location || undefined,
+    waiver: waiver || undefined
+  };
+  events.push(newEvent);
+  saveCustomEvents(events);
+
+  renderDays();
+  form.reset();
+  msg.style.color = "var(--palo-alto)";
+  msg.textContent = "Added!";
+  setTimeout(() => { msg.textContent = ""; }, 2500);
+
+  const target = document.querySelector(`.day[data-date="${date}"]`);
+  if (target) target.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+</script>
+</body>
+</html>
